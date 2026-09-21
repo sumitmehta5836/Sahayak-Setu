@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My jobs — SahayakSetu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/tailwind-config.js"></script>
+<script src="js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600&amp;family=Karla:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+
+<!-- ============================== Masthead ==============================
+     One header, one hairline — the same bar every page uses. It was two
+     blurred, shadowed bars stacked for desktop and mobile. -->
+<header class="masthead sticky top-0 w-full z-50">
+<div class="hidden md:flex justify-between items-center gap-10 h-[60px] px-margin-desktop max-w-[1180px] mx-auto">
+<a class="no-underline flex items-baseline gap-3 flex-shrink-0" href="landing.html">
+<span class="font-headline-lg text-[19px] leading-none text-primary">SahayakSetu</span>
+<span class="eyebrow hidden lg:inline">My jobs</span>
+</a>
+<nav class="flex gap-7 items-center">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#requests">Requests</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#upcoming-jobs">Upcoming</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#listing">My listing</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="account.html">Account</a>
+</nav>
+<!-- js/theme.js appends the light/dark switch to this cluster. -->
+<div class="flex gap-2 items-center flex-shrink-0">
+<button class="nav-logout btn btn-secondary btn-sm" type="button">Log out</button>
+</div>
+</div>
+<div class="flex justify-between items-center gap-4 px-margin-mobile h-[56px] w-full md:hidden">
+<a class="no-underline font-headline-lg-mobile text-primary" href="landing.html">SahayakSetu</a>
+<button class="nav-logout btn btn-secondary btn-sm" type="button">Log out</button>
+</div>
+</header>
+
+<!-- ============================ Identity band ===========================
+     Was a shadowed card with a 112px round person-icon avatar and a floating
+     blue earnings tile. It is now the page's one piece of full-width
+     furniture: who is signed in on the left, whether they are taking work on
+     the right. The rating sits with the name as a brass figure, not a stat
+     tile of its own. -->
+<section class="bg-surface-container-low border-b border-outline-variant">
+<div class="max-w-[1180px] mx-auto px-margin-mobile md:px-margin-desktop py-8 flex flex-wrap items-start justify-between gap-6">
+<div class="flex items-start gap-4 min-w-0">
+<div class="w-14 h-14 rounded bg-primary text-on-primary flex items-center justify-center font-headline-lg text-[20px] flex-shrink-0" id="profile-initials">·</div>
+<div class="min-w-0">
+<h1 class="font-headline-lg text-headline-lg text-on-surface truncate" id="profile-name">Loading…</h1>
+<p class="font-body-md text-body-md text-on-surface-variant truncate mt-0.5" id="profile-service">&mdash;</p>
+<div class="mt-2.5 flex flex-wrap items-center gap-2">
+<span class="badge badge-good" id="profile-code">Worker ID: —</span>
+<span class="badge badge-verified hidden" id="profile-verified-tick">Verified</span>
+<span class="figure rating-value text-[15px]" id="profile-rating">&mdash;</span>
+</div>
+</div>
+</div>
+<!-- Availability lives in the band, next to the identity it belongs to.
+     Hidden for an admin, who has no listing to switch. -->
+<div class="flex items-center gap-4 flex-shrink-0" id="availability-card">
+<div class="text-right">
+<h2 class="font-label-md text-label-md text-on-surface">Taking new jobs</h2>
+<p class="font-body-md text-[14px] text-on-surface-variant mt-0.5" id="status-text">Available for new jobs</p>
+</div>
+<label class="switch">
+<input checked class="toggle-checkbox" id="availability-toggle" type="checkbox"/>
+<span class="toggle-label"></span>
+</label>
+</div>
+</div>
+</section>
+
+<main class="max-w-[1180px] mx-auto px-margin-mobile md:px-margin-desktop pt-8 pb-32 md:pb-16">
+
+<!-- ============================== Tally =================================
+     The four counts, read across one ruled band instead of four floating
+     cards each with an icon restating its own label. -->
+<dl class="tally mb-10">
+<div class="tally-cell">
+<dt class="eyebrow">Today's jobs</dt>
+<dd class="figure tally-value text-on-surface" id="stat-today">0</dd>
+</div>
+<div class="tally-cell">
+<dt class="eyebrow">Completed</dt>
+<dd class="figure tally-value text-on-surface" id="stat-done">0</dd>
+</div>
+<div class="tally-cell">
+<dt class="eyebrow">This month</dt>
+<dd class="figure money tally-value" id="stat-month">&#8377;0</dd>
+</div>
+<div class="tally-cell">
+<dt class="eyebrow">Rating</dt>
+<dd class="figure rating-value tally-value" id="stat-rating">&mdash;</dd>
+</div>
+</dl>
+
+<!-- ======================= WORKER PROTECTION CENTER ===================== -->
+<section class="mb-12" id="protection-center">
+  <div class="rule-heading mb-2">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[22px]">shield_person</span>
+      <h2 class="font-title-md text-title-md text-on-surface">Worker Protection Center</h2>
+    </div>
+    <span class="eyebrow">Welfare & Safety Hub</span>
+  </div>
+  <p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-[65ch]">Real-time fatigue scoring, micro-insurance protection, emergency SOS response, and live demand intelligence.</p>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Card 1: Safety Score & Workload -->
+    <div class="panel p-5 flex flex-col justify-between" id="card-safety-score">
+      <div>
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="eyebrow">Workload & Fatigue</p>
+            <h3 class="font-title-md text-[18px] text-on-surface mt-0.5">Safety Score</h3>
+          </div>
+          <span class="badge badge-good text-[13px]" id="safety-status-badge">SAFE</span>
+        </div>
+        <div class="flex items-baseline gap-2 mt-4">
+          <span class="figure text-[32px] leading-none font-semibold text-primary" id="safety-score-number">100%</span>
+          <span class="font-body-md text-[13px] text-outline">workload rating</span>
+        </div>
+        <p class="font-body-md text-[13px] text-on-surface-variant mt-2" id="safety-recommendation">Your workload is within a safe range.</p>
+        <div class="mt-4 pt-3 border-t border-outline-variant grid grid-cols-2 gap-2 text-[12.5px]">
+          <div><span class="text-outline">Worked today:</span> <strong id="safety-working-hours">0h</strong></div>
+          <div><span class="text-outline">Consecutive:</span> <strong id="safety-consecutive">0</strong></div>
+        </div>
+      </div>
+      <div class="mt-4 pt-3 border-t border-outline-variant flex gap-2">
+        <button class="btn btn-secondary btn-sm flex-1" id="btn-take-break" type="button">Take Break</button>
+        <button class="btn btn-quiet btn-sm flex-1 hidden" id="btn-end-break" type="button">End Break</button>
+      </div>
+    </div>
+
+    <!-- Card 2: Sahayak Suraksha Insurance -->
+    <div class="panel p-5 flex flex-col justify-between" id="suraksha">
+      <div>
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="eyebrow">Partner Protection Plan</p>
+            <h3 class="font-title-md text-[18px] text-on-surface mt-0.5">Sahayak Suraksha</h3>
+          </div>
+          <span class="badge badge-wait" id="insurance-status-badge">Checking…</span>
+        </div>
+        <p class="font-body-md text-[13px] text-on-surface-variant mt-3">
+          Accidental & work-injury protection prototype up to <strong>₹2,00,000</strong> coverage at just <strong>₹49/month</strong>.
+        </p>
+        <dl class="spec mt-3 text-[12.5px]" id="insurance-details-dl">
+          <div><dt>Plan</dt><dd>Basic Worker Protection</dd></div>
+          <div><dt>Policy ID</dt><dd id="insurance-policy-num">&mdash;</dd></div>
+        </dl>
+      </div>
+      <div class="mt-4 pt-3 border-t border-outline-variant">
+        <button class="btn btn-primary btn-sm w-full" id="btn-enroll-insurance" type="button">Enroll in Suraksha</button>
+        <p class="field-hint text-center mt-1.5 text-[11px]">Affordable prototype cooperative coverage</p>
+      </div>
+    </div>
+
+    <!-- Card 3: Location Sharing & Emergency SOS -->
+    <div class="panel p-5 flex flex-col justify-between">
+      <div>
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <p class="eyebrow">Live Dispatch</p>
+            <h3 class="font-title-md text-[18px] text-on-surface mt-0.5">Location & SOS</h3>
+          </div>
+          <span class="badge badge-good hidden" id="loc-sharing-badge">Live Active</span>
+        </div>
+
+        <!-- Location Sharing Switch -->
+        <div class="flex items-center justify-between gap-4 mt-3 py-2 border-b border-outline-variant">
+          <div>
+            <p class="font-label-md text-label-md text-on-surface">Share Live Location</p>
+            <p class="font-body-md text-[12px] text-outline mt-0.5" id="loc-status-subtext">Off (browser geolocation)</p>
+          </div>
+          <label class="switch">
+            <input class="toggle-checkbox" id="loc-share-toggle" type="checkbox"/>
+            <span class="toggle-label"></span>
+          </label>
+        </div>
+
+        <!-- Emergency SOS Button -->
+        <div class="mt-4">
+          <p class="font-label-md text-label-md text-error flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">warning</span> Emergency Action
+          </p>
+          <button class="btn w-full mt-2 bg-[#9c2f22] hover:bg-[#7a241a] text-white border-0 font-bold" id="btn-trigger-sos" type="button">
+            🚨 Trigger Emergency SOS
+          </button>
+          <p class="field-hint text-center mt-1.5 text-[11px]" id="sos-status-msg">Logs emergency incident & alerts federation</p>
+        </div>
+      </div>
+
+      <!-- Claim assistance prompt (if incident exists) -->
+      <div class="mt-3 pt-2 border-t border-outline-variant hidden" id="incident-claim-box">
+        <p class="font-label-sm text-error font-semibold" id="recent-incident-label">Emergency Incident Logged</p>
+        <button class="btn btn-secondary btn-sm w-full mt-1.5 text-[12px]" id="btn-start-claim" type="button">Start Insurance Claim Assistance</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Demand Insights Banner: Where Demand is High -->
+  <div class="panel p-5 mt-6" id="demand-insights-box">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-3">
+      <div>
+        <p class="eyebrow">Real-Time Demand Intelligence</p>
+        <h3 class="font-title-md text-title-md text-on-surface">Where Demand is High Near You</h3>
+      </div>
+      <a class="btn btn-quiet btn-sm no-underline" href="dashboard.html">View Demand Map</a>
+    </div>
+    <p class="font-body-md text-body-md text-on-surface-variant mb-4 max-w-[70ch]">Derived from real customer service requests and complaints across cooperative service clusters. Position yourself where households need help most.</p>
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-3" id="demand-insights-grid">
+      <div class="well p-3"><span class="shimmer" style="height:20px;width:80%;"></span></div>
+      <div class="well p-3"><span class="shimmer" style="height:20px;width:70%;"></span></div>
+      <div class="well p-3"><span class="shimmer" style="height:20px;width:85%;"></span></div>
+      <div class="well p-3"><span class="shimmer" style="height:20px;width:60%;"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="grid lg:grid-cols-12 gap-10 lg:gap-14">
+
+<!-- ========================= Left: the work =============================
+     Requests to answer, then jobs already accepted. Both are ledgers —
+     ruled rows, not a stack of shadowed cards. -->
+<div class="lg:col-span-7 min-w-0">
+
+<section id="requests">
+<div class="rule-heading mb-1">
+<h2 class="font-title-md text-title-md text-on-surface">New booking requests</h2>
+<span class="font-body-md text-[14px] text-on-surface-variant flex-shrink-0" id="requests-count"></span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-5 max-w-[56ch]">A customer has asked for you. Accept to lock the slot, or reject to free it.</p>
+<div id="request-list"></div>
+</section>
+
+<section class="mt-12 pt-10 border-t border-outline-variant" id="upcoming-jobs">
+<div class="rule-heading mb-1">
+<h2 class="font-title-md text-title-md text-on-surface">Upcoming jobs</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-5 max-w-[56ch]">Accepted bookings, in the order you will work them.</p>
+<div id="upcoming-list"></div>
+</section>
+
+</div>
+
+<!-- ======================== Right: the standing rail =====================
+     Earnings and the public listing — read, not worked. Sticky on desktop.
+     The earnings figure is a plain brass total on paper, not a gradient
+     card, and it no longer counts up on load. -->
+<div class="lg:col-span-5 min-w-0">
+<div class="lg:sticky lg:top-[80px] flex flex-col gap-10">
+
+<section>
+<p class="eyebrow mb-3">Earnings</p>
+<p class="figure money text-[34px] leading-none"><span class="text-[20px] align-baseline">&#8377;</span><span id="earnings-counter">0</span></p>
+<p class="font-body-md text-[14px] text-on-surface-variant mt-2" id="earnings-note">From completed jobs</p>
+</section>
+
+<section id="listing" class="pt-9 border-t border-outline-variant">
+<div class="rule-heading mb-1">
+<h2 class="font-title-md text-title-md text-on-surface">My listing</h2>
+<a class="font-label-md text-label-md flex-shrink-0" href="account.html">Edit</a>
+</div>
+<p class="font-body-md text-[14px] text-on-surface-variant mb-4 max-w-[46ch]">What customers see when they search.</p>
+<dl class="spec" id="listing-details">
+<div><dt>Loading your listing…</dt><dd>&mdash;</dd></div>
+</dl>
+<p class="hidden notice mt-5" id="listing-note"></p>
+</section>
+
+</div>
+</div>
+
+</div>
+</main>
+
+<!-- ============================ Job details ============================
+     Was a glass panel of bold label/value pairs. Now a plain dialog whose
+     facts are the same ruled spec rows as the booking slip. -->
+<div id="job-details-modal" class="hidden fixed inset-0 z-[60] items-center justify-center bg-on-surface/40 px-4" role="dialog" aria-modal="true">
+<div class="panel w-full max-w-md p-6">
+<div class="flex justify-between items-start gap-4">
+<div>
+<p class="eyebrow">Accepted job</p>
+<h2 id="modal-service" class="font-title-md text-title-md text-on-surface mt-1"></h2>
+</div>
+<button id="close-job-modal" class="btn btn-quiet btn-sm flex-shrink-0" type="button" aria-label="Close">Close</button>
+</div>
+<dl id="modal-details" class="spec mt-5"></dl>
+</div>
+</div>
+
+<!-- Mobile bottom bar — filled in by js/nav.js -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center gap-1 px-2 py-2 md:hidden bg-surface-container-lowest border-t border-outline-variant" data-nav="bottom"></nav>
+
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/chat-widget.js"></script>
+</body>
+</html>
